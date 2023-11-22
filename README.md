@@ -32,7 +32,7 @@ Execute it (read [Usage](#usage) before executing)
 
 `flatpak-packages.txt` > Bunch of most used flatpak softwares, you **MUST** edit it to fit your needs. Check [Flathub](https://flathub.org/home) and search your software to find the flatpak ID.
 
-## Credits:
+## Credits
 
 [PYFO](https://github.com/d4rklynk/PYFO) (GPL-3.0)
 
