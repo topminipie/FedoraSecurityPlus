@@ -174,8 +174,8 @@ while [ "$CHOICE -ne 4" ]; do
             echo "Set generic machine id (https://github.com/Whonix/dist-base-files/blob/master/etc/machine-id)"
             sudo echo "b08dfa6083e7567a1921a715000001fb" > /var/lib/dbus/machine-id
 
-            echo "Add more entropy sources (jitterentropy)"     # https://github.com/Kicksecure/security-misc/blob/master/usr/lib/modules-load.d/30_security-misc.conf
-            sudo echo "jitterentropy_rng" > /usr/lib/modules-load.d/30_security-misc.conf
+            #echo "Add more entropy sources (jitterentropy)"     # https://github.com/Kicksecure/security-misc/blob/master/usr/lib/modules-load.d/30_security-misc.conf
+            #sudo echo "jitterentropy_rng" > /usr/lib/modules-load.d/30_security-misc.conf
 
             echo "Apply hardened bluetooth config"
             curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/etc/bluetooth/30_security-misc.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc.conf
