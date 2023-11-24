@@ -202,7 +202,6 @@ while [ "$CHOICE -ne 4" ]; do
             echo "Config: /etc/modprobe.d/30_security-misc.conf"
             curl -fsSL https://raw.githubusercontent.com/Kicksecure/security-misc/master/etc/modprobe.d/30_security-misc.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc.conf /etc/modprobe.d/30_security-misc.conf
-            # Delete conflicting Fedora blacklist config
             echo "Delete conflicting Fedora blacklist config"
             sudo rm -f /etc/modprobe.d/appletalk-blacklist.conf
             sudo rm -f /etc/modprobe.d/atm-blacklist.conf
@@ -213,7 +212,6 @@ while [ "$CHOICE -ne 4" ]; do
             sudo rm -f /etc/modprobe.d/sctp-blacklist.conf
             # ???
             sudo rm -f /etc/modprobe.d/firewalld-sysctls.conf
-            # Install "disabled-by-security-misc" echo script
             echo 'Install "disabled-by-security-misc" echo script'
             #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-bluetooth-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-bluetooth-by-security-misc    # Not used
             #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-bluetooth-by-security-misc /bin/disabled-bluetooth-by-security-misc
