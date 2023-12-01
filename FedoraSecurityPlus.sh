@@ -77,8 +77,8 @@ while [ "$CHOICE -ne 4" ]; do
             ;;
         3)
             echo "Update System And Reboot Now (Offline-Upgrade)"
-            dnf offline-upgrade download -y
-            dnf offline-upgrade reboot
+            sudo dnf offline-upgrade download -y
+            sudo dnf offline-upgrade reboot
             notify-send "Reboot..." --expire-time=1000
             ;;
         4)
@@ -164,7 +164,7 @@ while [ "$CHOICE -ne 4" ]; do
             sudo rm -rfv /var/crash/*
             sudo rm -rfv /var/lib/systemd/coredump/
 
-            echo "Set hostname 'localhost'"     # TODO: look
+            echo "Set hostname 'localhost'"
             sudo hostnamectl hostname "localhost"
 
             echo "Enable DNSSEC"
