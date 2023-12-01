@@ -119,7 +119,7 @@ while [ "$CHOICE -ne 4" ]; do
         10)
             echo "Installing Videos packages"
             sudo dnf install -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel
-            sudo dnf install lame\* --exclude=lame-devel
+            sudo dnf install -y lame\* --exclude=lame-devel
             sudo dnf group upgrade -y --with-optional Multimedia
             sudo dnf update -y
             notify-send "All done" --expire-time=1000
