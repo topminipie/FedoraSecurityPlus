@@ -143,22 +143,22 @@ while [ "$CHOICE -ne 4" ]; do
             sudo rm -rf /etc/systemd/networkd.conf.d/
             sudo mkdir /etc/systemd/networkd.conf.d/
             #sudo echo -n > /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf
-            sudo echo "[Network]" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf
-            sudo echo "IPv6PrivacyExtensions=kernel" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf
+            sudo sh -c 'echo "[Network]" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
+            sudo sh -c 'echo "IPv6PrivacyExtensions=kernel" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
 
             echo "Disable CoreDump"
             #
             sudo rm -rf /lib/systemd/coredump.conf.d/
             sudo mkdir /lib/systemd/coredump.conf.d/
             #sudo echo -n > /lib/systemd/coredump.conf.d/30_security-misc.conf
-            sudo echo "[Coredump]" >> /lib/systemd/coredump.conf.d/30_security-misc.conf
-            sudo echo "Storage=none" >> /lib/systemd/coredump.conf.d/30_security-misc.conf
+            sudo sh -c 'echo "[Coredump]" >> /lib/systemd/coredump.conf.d/30_security-misc.conf'
+            sudo sh -c 'echo "Storage=none" >> /lib/systemd/coredump.conf.d/30_security-misc.conf'
             #
             sudo rm -rf /etc/security/limits.d/
             sudo mkdir /etc/security/limits.d/
             #sudo echo -n > /etc/security/limits.d/30_security-misc.conf
-            sudo echo "## Disable coredumps." >> /etc/security/limits.d/30_security-misc.conf
-            sudo echo "* hard core 0" >> /etc/security/limits.d/30_security-misc.conf
+            sudo sh -c 'echo "## Disable coredumps." >> /etc/security/limits.d/30_security-misc.conf'
+            sudo sh -c 'echo "* hard core 0" >> /etc/security/limits.d/30_security-misc.conf'
 
             echo "Clear system crash and CoreDump files"    # Credits: https://privacy.sexy
             sudo rm -rfv /var/crash/*
