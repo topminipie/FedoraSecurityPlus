@@ -62,11 +62,11 @@ while [ "$CHOICE -ne 4" ]; do
     case $CHOICE in
         1)
             echo "Speeding Up DNF"
-            grep -q "# FedoraSecurityPlus" /etc/dnf/dnf.conf || sudo echo "# FedoraSecurityPlus" >> /etc/dnf/dnf.conf
-            grep -q "fastestmirror=1" /etc/dnf/dnf.conf || sudo echo "fastestmirror=1" >> /etc/dnf/dnf.conf
-            grep -q "max_parallel_downloads=10" /etc/dnf/dnf.conf || sudo echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf
-            grep -q "deltarpm=true" /etc/dnf/dnf.conf || sudo echo "deltarpm=true" >> /etc/dnf/dnf.conf
-            grep -q "countme=false" /etc/dnf/dnf.conf || sudo echo "countme=false" >> /etc/dnf/dnf.conf
+            grep -q "# FedoraSecurityPlus" /etc/dnf/dnf.conf || sudo sh -c 'echo "# FedoraSecurityPlus" >> /etc/dnf/dnf.conf'
+            grep -q "fastestmirror=1" /etc/dnf/dnf.conf || sudo sh -c 'echo "fastestmirror=1" >> /etc/dnf/dnf.conf'
+            grep -q "max_parallel_downloads=10" /etc/dnf/dnf.conf || sudo sh -c 'echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf'
+            grep -q "deltarpm=true" /etc/dnf/dnf.conf || sudo sh -c 'echo "deltarpm=true" >> /etc/dnf/dnf.conf'
+            grep -q "countme=false" /etc/dnf/dnf.conf || sudo sh -c 'echo "countme=false" >> /etc/dnf/dnf.conf'
             notify-send "Your DNF config has now been amended" --expire-time=1000
             ;;
         2)
@@ -168,14 +168,14 @@ while [ "$CHOICE -ne 4" ]; do
             sudo hostnamectl hostname "localhost"
 
             echo "Enable DNSSEC"
-            grep -q "# FedoraSecurityPlus" /etc/systemd/resolved.conf || sudo echo "# FedoraSecurityPlus" >> /etc/systemd/resolved.conf
-            grep -q "DNSSEC=yes" /etc/systemd/resolved.conf || sudo echo "DNSSEC=yes" >> /etc/systemd/resolved.conf
+            grep -q "# FedoraSecurityPlus" /etc/systemd/resolved.conf || sudo sh -c 'echo "# FedoraSecurityPlus" >> /etc/systemd/resolved.conf'
+            grep -q "DNSSEC=yes" /etc/systemd/resolved.conf || sudo sh -c 'echo "DNSSEC=yes" >> /etc/systemd/resolved.conf'
 
             echo "Set generic machine id (https://github.com/Whonix/dist-base-files/blob/master/etc/machine-id)"
-            sudo echo "b08dfa6083e7567a1921a715000001fb" > /var/lib/dbus/machine-id
+            sudo sh -c 'echo "b08dfa6083e7567a1921a715000001fb" > /var/lib/dbus/machine-id'
 
             #echo "Add more entropy sources (jitterentropy)"     # https://github.com/Kicksecure/security-misc/blob/master/usr/lib/modules-load.d/30_security-misc.conf
-            #sudo echo "jitterentropy_rng" > /usr/lib/modules-load.d/30_security-misc.conf
+            #sudo sh -c 'echo "jitterentropy_rng" > /usr/lib/modules-load.d/30_security-misc.conf'
 
             echo "Apply hardened bluetooth config"
             curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/etc/bluetooth/30_security-misc.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc.conf
@@ -238,8 +238,7 @@ while [ "$CHOICE -ne 4" ]; do
             echo "Replicate chrony.conf from GrapheneOS and hardening chrony demon"
             curl -fsSL https://raw.githubusercontent.com/GrapheneOS/infrastructure/main/chrony.conf > /home/$USER/.tmp_FedoraSecurityPlus/chrony.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/chrony.conf /etc/chrony.conf
-            sudo echo -n > /etc/sysconfig/chronyd
-            sudo echo 'OPTIONS="-F 1"' >> /etc/sysconfig/chronyd          # Enable seccomp for chronyd
+            sudo sh -c 'echo 'OPTIONS="-F 1"' > /etc/sysconfig/chronyd'          # Enable seccomp for chronyd
             sudo systemctl restart chronyd
 
             ### More isolate
