@@ -160,16 +160,16 @@ while [ "$CHOICE -ne 4" ]; do
             sudo sh -c 'echo "## Disable coredumps." >> /etc/security/limits.d/30_security-misc.conf'
             sudo sh -c 'echo "* hard core 0" >> /etc/security/limits.d/30_security-misc.conf'
 
-            echo "Clear system crash and CoreDump files"    # Credits: https://privacy.sexy
+            echo "Clear system crash and CoreDump files"    # Credit: https://privacy.sexy
             sudo rm -rfv /var/crash/*
             sudo rm -rfv /var/lib/systemd/coredump/
 
             echo "Set hostname 'localhost'"
             sudo hostnamectl hostname "localhost"
 
-            echo "Enable DNSSEC"
-            grep -q "# FedoraSecurityPlus" /etc/systemd/resolved.conf || sudo sh -c 'echo "# FedoraSecurityPlus" >> /etc/systemd/resolved.conf'
-            grep -q "DNSSEC=yes" /etc/systemd/resolved.conf || sudo sh -c 'echo "DNSSEC=yes" >> /etc/systemd/resolved.conf'
+            #echo "Enable DNSSEC"
+            #grep -q "# FedoraSecurityPlus" /etc/systemd/resolved.conf || sudo sh -c 'echo "# FedoraSecurityPlus" >> /etc/systemd/resolved.conf'
+            #grep -q "DNSSEC=yes" /etc/systemd/resolved.conf || sudo sh -c 'echo "DNSSEC=yes" >> /etc/systemd/resolved.conf'
 
             echo "Set generic machine id (https://github.com/Whonix/dist-base-files/blob/master/etc/machine-id)"
             sudo sh -c 'echo "b08dfa6083e7567a1921a715000001fb" > /var/lib/dbus/machine-id'
@@ -269,7 +269,7 @@ while [ "$CHOICE -ne 4" ]; do
             notify-send "hardened_malloc installed (you must reboot to make it effective)" --expire-time=1000
             ;;
         13)
-            echo 'Clear system (journald) logs'         # Credits: https://privacy.sexy
+            echo 'Clear system (journald) logs'         # Credit: https://privacy.sexy
             sudo journalctl --vacuum-time=1s
             sudo rm -rfv /run/log/journal/*
             sudo rm -rfv /var/log/journal/*
