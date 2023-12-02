@@ -24,6 +24,9 @@ MENU="Please Choose one of the following options:"
             #sudo firewall-cmd --add-protocol=ipv6-icmp --permanent
             #sudo firewall-cmd --add-service=dhcpv6-client --permanent
 
+            #echo "Add more entropy sources (jitterentropy)"     # https://github.com/Kicksecure/security-misc/blob/master/usr/lib/modules-load.d/30_security-misc.conf
+            #sudo sh -c 'echo "jitterentropy_rng" > /usr/lib/modules-load.d/30_security-misc.conf'
+
 # Check to see if Dialog is installed, if not install it - Thanks Kinkz_nl
 if [ $(rpm -q dialog 2>/dev/null | grep -c "dialog is not installed") -eq 1 ]; then
 sudo dnf install -y dialog
@@ -167,15 +170,8 @@ while [ "$CHOICE -ne 4" ]; do
             echo "Set hostname 'localhost'"
             sudo hostnamectl hostname "localhost"
 
-            #echo "Enable DNSSEC"
-            #grep -q "# FedoraSecurityPlus" /etc/systemd/resolved.conf || sudo sh -c 'echo "# FedoraSecurityPlus" >> /etc/systemd/resolved.conf'
-            #grep -q "DNSSEC=yes" /etc/systemd/resolved.conf || sudo sh -c 'echo "DNSSEC=yes" >> /etc/systemd/resolved.conf'
-
             echo "Set generic machine id (https://github.com/Whonix/dist-base-files/blob/master/etc/machine-id)"
             sudo sh -c 'echo "b08dfa6083e7567a1921a715000001fb" > /var/lib/dbus/machine-id'
-
-            #echo "Add more entropy sources (jitterentropy)"     # https://github.com/Kicksecure/security-misc/blob/master/usr/lib/modules-load.d/30_security-misc.conf
-            #sudo sh -c 'echo "jitterentropy_rng" > /usr/lib/modules-load.d/30_security-misc.conf'
 
             echo "Apply hardened bluetooth config"
             curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/etc/bluetooth/30_security-misc.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc.conf
