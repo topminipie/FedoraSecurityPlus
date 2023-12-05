@@ -34,18 +34,20 @@ Execute it (read [Usage](#usage) before executing)
 
 ## Credits
 
-[PYFO](https://github.com/d4rklynk/PYFO) (GPL-3.0)
+[PYFO](https://github.com/d4rklynk/PYFO) ([GPL-3.0](https://github.com/d4rklynk/PYFO/blob/main/LICENSE))
 
-[fedora-setup](https://github.com/smittix/fedora-setup) (GPL-3.0)
+[fedora-setup](https://github.com/smittix/fedora-setup) ([GPL-3.0](https://github.com/smittix/fedora-setup/blob/main/LICENSE))
 
-[Brace](https://github.com/divestedcg/Brace) (GPL-3.0)
+[Brace](https://github.com/divestedcg/Brace) ([GPL-3.0](https://github.com/divestedcg/Brace/blob/master/LICENSE))
 
-[Privacy.sexy](https://privacy.sexy) (AGPL-3.0)
+[Privacy.sexy](https://privacy.sexy) ([AGPL-3.0](https://github.com/undergroundwires/privacy.sexy/blob/master/LICENSE))
 
-[GrapheneOS Configs](https://github.com/GrapheneOS/infrastructure) (MIT)
+[GrapheneOS Configs](https://github.com/GrapheneOS/infrastructure) ([MIT](https://github.com/GrapheneOS/infrastructure/blob/main/LICENSE))
 
 [Kicksecure Configs](https://github.com/Kicksecure/security-misc) (AGPL-3.0)
 
 [Privsec Linux Hardening](https://privsec.dev/posts/linux/desktop-linux-hardening) (CC BY-SA 4.0)
 
 [Madaidans Linux Hardening](https://madaidans-insecurities.github.io/guides/linux-hardening.html) (¯\_ (ツ)_/¯)
+
+[PrivacyGuides.org](https://www.privacyguides.org/) ([LICENSE](https://github.com/privacyguides/privacyguides.org/blob/main/LICENSE))
