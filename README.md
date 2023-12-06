@@ -44,9 +44,9 @@ Execute it (read [Usage](#usage) before executing)
 
 [GrapheneOS Configs](https://github.com/GrapheneOS/infrastructure) ([MIT](https://github.com/GrapheneOS/infrastructure/blob/main/LICENSE))
 
-[Kicksecure Configs](https://github.com/Kicksecure/security-misc) (AGPL-3.0)
+[Kicksecure Configs](https://github.com/Kicksecure/security-misc) ([AGPL-3.0](https://github.com/Kicksecure/security-misc/blob/master/debian/copyright))
 
-[Privsec Linux Hardening](https://privsec.dev/posts/linux/desktop-linux-hardening) (CC BY-SA 4.0)
+[Privsec Linux Hardening](https://privsec.dev/posts/linux/desktop-linux-hardening) ([CC BY-SA 4.0](https://github.com/PrivSec-dev/privsec.dev/blob/main/LICENSE.md))
 
 [Madaidans Linux Hardening](https://madaidans-insecurities.github.io/guides/linux-hardening.html) (¯\_ (ツ)_/¯)
 
