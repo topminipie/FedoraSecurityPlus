@@ -27,10 +27,6 @@ MENU="Please Choose one of the following options:"
             #echo "Add more entropy sources (jitterentropy)"     # https://github.com/Kicksecure/security-misc/blob/master/usr/lib/modules-load.d/30_security-misc.conf
             #sudo sh -c 'echo "jitterentropy_rng" > /usr/lib/modules-load.d/30_security-misc.conf'
 
-            #echo "Enable DNSSEC"
-            #grep -q "# FedoraSecurityPlus" /etc/systemd/resolved.conf || sudo sh -c 'echo "# FedoraSecurityPlus" >> /etc/systemd/resolved.conf'
-            #grep -q "DNSSEC=yes" /etc/systemd/resolved.conf || sudo sh -c 'echo "DNSSEC=yes" >> /etc/systemd/resolved.conf'
-
 # Check to see if Dialog is installed, if not install it - Thanks Kinkz_nl
 if [ $(rpm -q dialog 2>/dev/null | grep -c "dialog is not installed") -eq 1 ]; then
 sudo dnf install -y dialog
@@ -53,6 +49,7 @@ OPTIONS=(1 "Speed up DNF"
          12 "Install hardened_malloc"
          13 "Clear system (journald) logs files"
          14 "Clear Bash, Python history"
+         15 "Set DNS Server"
          99 "Quit")
 
 while [ "$CHOICE -ne 4" ]; do
@@ -275,6 +272,319 @@ while [ "$CHOICE -ne 4" ]; do
             rm -f /home/$USER/.bash_history
             rm -f /home/$USER/.python_history
             notify-send "Done" --expire-time=1000
+            ;;
+        15)
+            function start_resolv_conf {
+                sudo mkdir -p /etc/systemd/resolved.conf.d
+                sudo sh -c "echo -n > /etc/systemd/resolved.conf.d/custom_dns.conf"
+                sudo sh -c 'echo "[Resolve]" > /etc/systemd/resolved.conf.d/custom_dns.conf'
+            }
+
+            function put_resolv_conf {
+                sudo sh -c 'echo "DNS='$1'" >> /etc/systemd/resolved.conf.d/custom_dns.conf'
+            }
+
+            function complete_resolv_conf {
+                sudo sh -c 'echo "DNSOverTLS=yes" >> /etc/systemd/resolved.conf.d/custom_dns.conf'
+                sudo sh -c 'echo "DNSSEC=yes" >> /etc/systemd/resolved.conf.d/custom_dns.conf'
+            }
+
+            function restart_network_services {
+                sudo systemctl restart systemd-resolved
+                sudo systemctl restart NetworkManager
+            }
+
+            function invalid_input {
+                clear
+                echo "Invalid Input"
+                echo
+            }
+
+            function main_memu {
+                clear
+                echo "Please read this before choosing a DNS provider:"
+                echo "https://www.privacyguides.org/en/advanced/dns-overview"
+                echo "https://www.privacyguides.org/en/dns"
+                echo ""
+                echo "You can check the installed DNS server with this command - resolvectl status"
+                echo ""
+                echo "Please Choose one of the following options:"
+                echo "1 - Set Quad9 DNS         (Some Logs, No ECS)"
+                echo "2 - Set Mullvad DNS       (No Logs,   No ECS)"
+                echo "3 - Set ControlD DNS      (No Logs,   No ECS)"
+                echo "4 - Set CloudFlare DNS    (Some Logs, No ECS)"
+                echo "5 - Set AdGuard DNS       (Some Logs, Always ECS)"
+                echo "6 - Delete custom_dns.conf"
+                echo "7 - Exit"
+                echo -n "Enter Number: "
+                read main_memu_select
+                if [ $main_memu_select == 1 ]; then
+                    clear
+                    dns_quad9_memu
+
+                elif [ $main_memu_select == 2 ]; then
+                    clear
+                    dns_mullvad_menu
+
+                elif [ $main_memu_select == 3 ]; then
+                    clear
+                    dns_controld_menu
+
+                elif [ $main_memu_select == 4 ]; then
+                    clear
+                    dns_cloudflare_menu
+
+                elif [ $main_memu_select == 5 ]; then
+                    clear
+                    dns_adguard_menu
+
+                elif [ $main_memu_select == 6 ]; then
+                    sudo rm -rf /etc/systemd/resolved.conf.d/custom_dns.conf
+                    restart_network_services
+
+                elif [ $main_memu_select == 7 ]; then
+                    clear
+
+                else
+                    main_memu
+
+                fi
+            }
+
+            function dns_quad9_memu {
+                echo "Quad9 DNS"
+                echo "1 - Set, filtered only malware."
+                echo "2 - Exit"
+                echo -n "Enter Number: "
+                read dns_quad9_select
+
+                if [ $dns_quad9_select == 1 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 9.9.9.9#dns.quad9.net
+                    put_resolv_conf 149.112.112.112#dns.quad9.net
+                    put_resolv_conf 2620:fe::fe#dns.quad9.net
+                    put_resolv_conf 2620:fe::9#dns.quad9.net
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "Quad9 DNS Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_quad9_select == 2 ]; then
+                    main_memu
+
+                else
+                    invalid_input
+                    dns_quad9_memu
+
+                fi
+            }
+
+            function dns_mullvad_menu {
+                echo "Mullvad DNS"
+                echo "1 - Set, unfiltered."
+                echo "2 - Set, filtered ads, tracker, malware. (with Mullvad blocklist)"
+                echo "3 - Exit"
+                echo -n "Enter Number: "
+                read dns_mullvad_select
+
+                if [ $dns_mullvad_select == 1 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 194.242.2.2#dns.mullvad.net
+                    put_resolv_conf 2a07:e340::2#dns.mullvad.net
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "Mullvad DNS (unfiltered) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_mullvad_select == 2 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 194.242.2.4#base.dns.mullvad.net
+                    put_resolv_conf 2a07:e340::4#base.dns.mullvad.net
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "Mullvad DNS (filtered) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_mullvad_select == 3 ]; then
+                    main_memu
+
+                else
+                    invalid_input
+                    dns_mullvad_menu
+
+                fi
+            }
+
+            function dns_controld_menu {
+                echo "ControlD DNS"
+                echo "1 - Set, unfiltered."
+                echo "2 - Set, filtered ads, tracker, malware. (With ControlD blocklist)"
+                echo "3 - Set, filtered ads, tracker, malware. (With Hagezi-Pro blocklist - https://github.com/hagezi/dns-blocklists)"
+                echo "4 - Set, filtered ads, tracker, malware. (With Hagezi-Ultimate blocklist - https://github.com/hagezi/dns-blocklists)"
+                echo "5 - Exit"
+                echo -n "Enter Number: "
+                read dns_controld_select
+
+                if [ $dns_controld_select == 1 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 76.76.2.0#p0.freedns.controld.com
+                    put_resolv_conf 76.76.10.0#p0.freedns.controld.com
+                    put_resolv_conf 2606:1a40::#p0.freedns.controld.com
+                    put_resolv_conf 2606:1a40:1::#p0.freedns.controld.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "ControlD DNS (unfiltered) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_controld_select == 2 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 76.76.2.2#p2.freedns.controld.com
+                    put_resolv_conf 76.76.10.2#p2.freedns.controld.com
+                    put_resolv_conf 2606:1a40::2#p2.freedns.controld.com
+                    put_resolv_conf 2606:1a40:1::2#p2.freedns.controld.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "ControlD DNS (filtered ControlD) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_controld_select == 3 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 76.76.2.41#x-hagezi-pro.freedns.controld.com
+                    put_resolv_conf 76.76.10.41#x-hagezi-pro.freedns.controld.com
+                    put_resolv_conf 2606:1a40::41#x-hagezi-pro.freedns.controld.com
+                    put_resolv_conf 2606:1a40:1::41#x-hagezi-pro.freedns.controld.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "ControlD DNS (filtered Hagezi-Pro) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_controld_select == 4 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 76.76.2.45#x-hagezi-ultimate.freedns.controld.com
+                    put_resolv_conf 76.76.10.45#x-hagezi-ultimate.freedns.controld.com
+                    put_resolv_conf 2606:1a40::45#x-hagezi-ultimate.freedns.controld.com
+                    put_resolv_conf 2606:1a40:1::45#x-hagezi-ultimate.freedns.controld.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "ControlD DNS (filtered Hagezi-Ultimate) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_controld_select == 5 ]; then
+                    main_memu
+
+                else
+                    invalid_input
+                    dns_controld_menu
+
+
+                fi
+            }
+
+            function dns_cloudflare_menu {
+                echo "CloudFlare DNS"
+                echo "1 - Set, unfiltered."
+                echo "2 - Set, filtered only malware."
+                echo "3 - Set, family filter."
+                echo "4 - Exit"
+                echo -n "Enter Number: "
+                read dns_cloudflare_select
+
+                if [ $dns_cloudflare_select == 1 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 1.1.1.1#cloudflare-dns.com
+                    put_resolv_conf 1.0.0.1#cloudflare-dns.com
+                    put_resolv_conf 2606:4700:4700::1111#cloudflare-dns.com
+                    put_resolv_conf 2606:4700:4700::1001#cloudflare-dns.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "CloudFlare DNS (unfiltered) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_cloudflare_select == 2 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 1.1.1.2#security.cloudflare-dns.com
+                    put_resolv_conf 1.0.0.2#security.cloudflare-dns.com
+                    put_resolv_conf 2606:4700:4700::1112#security.cloudflare-dns.com
+                    put_resolv_conf 2606:4700:4700::1002#security.cloudflare-dns.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "CloudFlare DNS (filtered only malware) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_cloudflare_select == 3 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 1.1.1.3#family.cloudflare-dns.com
+                    put_resolv_conf 1.0.0.3#family.cloudflare-dns.com
+                    put_resolv_conf 2606:4700:4700::1113#family.cloudflare-dns.com
+                    put_resolv_conf 2606:4700:4700::1003#family.cloudflare-dns.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "CloudFlare DNS (family filter) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_cloudflare_select == 4 ]; then
+                    main_memu
+
+                else
+                    invalid_input
+                    dns_cloudflare_menu
+
+                fi
+            }
+
+            function dns_adguard_menu {
+                echo "AdGuard DNS"
+                echo "1 - Set, unfiltered."
+                echo "2 - Set, filtered ads, tracker, malware. (With AdGuard blocklist)"
+                echo "3 - Set, family filter."
+                echo "4 - Exit"
+                echo -n "Enter Number: "
+                read dns_adguard_select
+
+                if [ $dns_adguard_select == 1 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 94.140.14.140#unfiltered.adguard-dns.com
+                    put_resolv_conf 94.140.14.141#unfiltered.adguard-dns.com
+                    put_resolv_conf 2a10:50c0::1:ff#unfiltered.adguard-dns.com
+                    put_resolv_conf 2a10:50c0::2:ff#unfiltered.adguard-dns.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "AdGuard DNS (unfiltered) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_adguard_select == 2 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 94.140.14.14#dns.adguard-dns.com
+                    put_resolv_conf 94.140.14.141#dns.adguard-dns.com
+                    put_resolv_conf 2a10:50c0::ad1:ff#dns.adguard-dns.com
+                    put_resolv_conf 2a10:50c0::ad2:ff#dns.adguard-dns.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "AdGuard DNS (filtered AdGuard) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_adguard_select == 3 ]; then
+                    start_resolv_conf
+                    put_resolv_conf 94.140.14.15#family.adguard-dns.com
+                    put_resolv_conf 94.140.15.16#family.adguard-dns.com
+                    put_resolv_conf 2a10:50c0::bad1:ff#family.adguard-dns.com
+                    put_resolv_conf 2a10:50c0::bad2:ff#family.adguard-dns.com
+                    complete_resolv_conf
+                    restart_network_services
+                    notify-send "AdGuard DNS (family filter) Installed" --expire-time=1000
+                    main_memu
+
+                elif [ $dns_adguard_select == 4 ]; then
+                    main_memu
+
+                else
+                    invalid_input
+                    dns_adguard_menu
+
+                fi
+            }
+
+            main_memu   # Start main menu
             ;;
         99)
             rm -rf /home/$USER/.tmp_FedoraSecurityPlus  # Delete temp dir
