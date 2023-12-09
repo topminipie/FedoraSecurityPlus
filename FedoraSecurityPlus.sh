@@ -69,7 +69,6 @@ while [ "$CHOICE -ne 4" ]; do
             grep -q "# FedoraSecurityPlus" /etc/dnf/dnf.conf || sudo sh -c 'echo "# FedoraSecurityPlus" >> /etc/dnf/dnf.conf'
             grep -q "fastestmirror=1" /etc/dnf/dnf.conf || sudo sh -c 'echo "fastestmirror=1" >> /etc/dnf/dnf.conf'
             grep -q "max_parallel_downloads=10" /etc/dnf/dnf.conf || sudo sh -c 'echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf'
-            grep -q "deltarpm=true" /etc/dnf/dnf.conf || sudo sh -c 'echo "deltarpm=true" >> /etc/dnf/dnf.conf'
             grep -q "countme=false" /etc/dnf/dnf.conf || sudo sh -c 'echo "countme=false" >> /etc/dnf/dnf.conf'
             notify-send "Your DNF config has now been amended" --expire-time=1000
             ;;
