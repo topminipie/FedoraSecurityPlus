@@ -46,7 +46,7 @@ OPTIONS=(1 "Speed up DNF"
          9 "Install some flatpak software - Check flatpak-packages.txt"
          10 "Install Videos packages - Video codec and stuff as per the official doc"
          11 "Harden your Fedora"
-         12 "Install hardened_malloc"
+         #12 "Install hardened_malloc"
          13 "Clear system (journald) logs files"
          14 "Clear Bash, Python history"
          15 "Set DNS Server"
@@ -252,13 +252,13 @@ while [ "$CHOICE -ne 4" ]; do
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/99-brace.conf /etc/systemd/system/ModemManager.service.d/99-brace.conf
             notify-send "Fedora is hardened (you must reboot to make it effective)" --expire-time=1000
             ;;
-        12)
-            echo "Installing Divested repo"
-            sudo dnf install -y https://gitlab.com/divested/divested-release/-/jobs/4361602859/artifacts/raw/build/noarch/divested-release-20230406-2.noarch.rpm
-            echo "Installing hardened_malloc"
-            sudo dnf -y install hardened_malloc
-            notify-send "hardened_malloc installed (you must reboot to make it effective)" --expire-time=1000
-            ;;
+        #12)
+            #echo "Installing Divested repo"
+            #sudo dnf install -y https://gitlab.com/divested/divested-release/-/jobs/4361602859/artifacts/raw/build/noarch/divested-release-20230406-2.noarch.rpm
+            #echo "Installing hardened_malloc"
+            #sudo dnf -y install hardened_malloc
+            #notify-send "hardened_malloc installed (you must reboot to make it effective)" --expire-time=1000
+            #;;
         13)
             echo 'Clear system (journald) logs'         # Credit: https://privacy.sexy
             sudo journalctl --vacuum-time=1s
