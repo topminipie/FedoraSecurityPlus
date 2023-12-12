@@ -70,6 +70,9 @@ while [ "$CHOICE -ne 4" ]; do
             grep -q "fastestmirror=1" /etc/dnf/dnf.conf || sudo sh -c 'echo "fastestmirror=1" >> /etc/dnf/dnf.conf'
             grep -q "max_parallel_downloads=10" /etc/dnf/dnf.conf || sudo sh -c 'echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf'
             grep -q "countme=false" /etc/dnf/dnf.conf || sudo sh -c 'echo "countme=false" >> /etc/dnf/dnf.conf'
+
+            # Credit https://github.com/divestedcg/Brace/blob/master/brace/usr/bin/brace-supplemental-changes#L35
+            sudo sed -i 's/countme=1/countme=0/' /etc/yum.repos.d/*.repo
             notify-send "Your DNF config has now been amended" --expire-time=1000
             ;;
         2)
