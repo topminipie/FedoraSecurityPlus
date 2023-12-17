@@ -1,7 +1,7 @@
 # FedoraSecurityPlus
 FedoraSecurityPlus is a post-install script for upstream version of Fedora. It also focuses on security.
 
-This script has been tested for: none (Coming soon)
+This script has been tested for: Fedora 39, Fedora 38.
 
 It is meant to use right after you installed Fedora. This script will just install needed software that most people probably use.
 So you will not have a bunch of sketchy software that you don't need.
