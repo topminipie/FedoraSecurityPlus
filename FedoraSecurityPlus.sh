@@ -154,7 +154,7 @@ while [ "$CHOICE -ne 4" ]; do
             echo "Disable CoreDump"
             #
             sudo mkdir /lib/systemd/coredump.conf.d/
-            sudo echo -n > /lib/systemd/coredump.conf.d/30_security-misc.conf
+            sudo sh -c 'echo -n > /lib/systemd/coredump.conf.d/30_security-misc.conf'
             sudo sh -c 'echo "[Coredump]" >> /lib/systemd/coredump.conf.d/30_security-misc.conf'
             sudo sh -c 'echo "Storage=none" >> /lib/systemd/coredump.conf.d/30_security-misc.conf'
             #
@@ -169,7 +169,7 @@ while [ "$CHOICE -ne 4" ]; do
             echo "Set hostname 'localhost'"
             sudo hostnamectl hostname "localhost"
 
-            echo "Set generic machine id (https://github.com/Whonix/dist-base-files/blob/master/etc/machine-id)"
+            echo "Set generic machine id (https://github.com/Kicksecure/dist-base-files/blob/master/etc/machine-id)"
             sudo sh -c 'echo "b08dfa6083e7567a1921a715000001fb" > /var/lib/dbus/machine-id'
 
             echo "Apply hardened bluetooth config"
