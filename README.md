@@ -48,6 +48,6 @@ Execute it (read [Usage](#usage) before executing)
 
 [Privsec Linux Hardening](https://privsec.dev/posts/linux/desktop-linux-hardening) ([CC BY-SA 4.0](https://github.com/PrivSec-dev/privsec.dev/blob/main/LICENSE.md))
 
-[Madaidans Linux Hardening](https://madaidans-insecurities.github.io/guides/linux-hardening.html) (¯\_ (ツ)_/¯)
+[Madaidans Linux Hardening](https://madaidans-insecurities.github.io/guides/linux-hardening.html) (*¯\_ (ツ)_/¯*)
 
 [PrivacyGuides.org](https://www.privacyguides.org/) ([LICENSE](https://github.com/privacyguides/privacyguides.org/blob/main/LICENSE))
