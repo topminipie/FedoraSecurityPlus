@@ -146,14 +146,14 @@ while [ "$CHOICE -ne 4" ]; do
             curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/NetworkManager/conf.d/80_randomize-mac.conf > /home/$USER/.tmp_FedoraSecurityPlus/80_randomize-mac.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/80_randomize-mac.conf /etc/NetworkManager/conf.d/80_randomize-mac.conf
             # enable ipv6 privacy
-            sudo mkdir /etc/systemd/networkd.conf.d/
+            sudo mkdir -p /etc/systemd/networkd.conf.d/
             sudo sh -c 'echo -n > /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
             sudo sh -c 'echo "[Network]" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
             sudo sh -c 'echo "IPv6PrivacyExtensions=kernel" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
 
             echo "Disable CoreDump"
             #
-            sudo mkdir /lib/systemd/coredump.conf.d/
+            sudo mkdir -p /lib/systemd/coredump.conf.d/
             sudo sh -c 'echo -n > /lib/systemd/coredump.conf.d/30_security-misc.conf'
             sudo sh -c 'echo "[Coredump]" >> /lib/systemd/coredump.conf.d/30_security-misc.conf'
             sudo sh -c 'echo "Storage=none" >> /lib/systemd/coredump.conf.d/30_security-misc.conf'
@@ -178,7 +178,7 @@ while [ "$CHOICE -ne 4" ]; do
 
             ### Hardening linux kernel parameters
             #echo "Hardening linux kernel parameters"
-            #sudo mkdir /etc/default/grub.d/
+            #sudo mkdir -p /etc/default/grub.d/
             #sudo curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/etc/default/grub.d/40_cpu_mitigations.cfg > /etc/grub.d/40_cpu_mitigations.cfg
             #sudo curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/etc/default/grub.d/40_distrust_bootloader.cfg > /etc/grub.d/40_distrust_bootloader.cfg
             #sudo curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/etc/default/grub.d/40_distrust_cpu.cfg > /etc/grub.d/40_distrust_cpu.cfg
