@@ -267,10 +267,8 @@ while [ "$CHOICE -ne 4" ]; do
 
             if [ $hardened_malloc_select == y ]; then
                 sudo dnf install https://gitlab.com/divested/rpm-hardened_malloc/-/jobs/5736638991/artifacts/raw/x86_64/hardened_malloc-12-9.fc36.x86_64.rpm
-
-            elif [ $hardened_malloc_select == n ]; then
-                echo "Exit"
-
+                notify-send "hardened_malloc installed (you must reboot to make it effective)" --expire-time=1000
+                
             else
                 echo "Exit"
 
@@ -280,7 +278,6 @@ while [ "$CHOICE -ne 4" ]; do
             #sudo dnf install -y https://gitlab.com/divested/divested-release/-/jobs/4361602859/artifacts/raw/build/noarch/divested-release-20230406-2.noarch.rpm
             #echo "Installing hardened_malloc"
             #sudo dnf install hardened_malloc
-            notify-send "hardened_malloc installed (you must reboot to make it effective)" --expire-time=1000
             ;;
         13)
             echo 'Clear system (journald) logs'         # Credit: https://privacy.sexy
