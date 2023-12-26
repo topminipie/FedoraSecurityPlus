@@ -262,8 +262,7 @@ while [ "$CHOICE -ne 4" ]; do
             echo "Read this before you use it:"
             echo "https://github.com/divestedcg/rpm-hardened_malloc#known-issues"
             echo
-            echo -n "Install hardened_malloc? [y/N]: "
-            read hardened_malloc_select
+            read -p "Install hardened_malloc? [y/N]: " hardened_malloc_select
 
             if [ $hardened_malloc_select == y ]; then
                 sudo dnf install https://gitlab.com/divested/rpm-hardened_malloc/-/jobs/5736638991/artifacts/raw/x86_64/hardened_malloc-12-9.fc36.x86_64.rpm
@@ -277,7 +276,8 @@ while [ "$CHOICE -ne 4" ]; do
             #echo "Installing Divested repo"
             #sudo dnf install -y https://gitlab.com/divested/divested-release/-/jobs/4361602859/artifacts/raw/build/noarch/divested-release-20230406-2.noarch.rpm
             #echo "Installing hardened_malloc"
-            #sudo dnf install hardened_malloc
+            #sudo dnf install -y hardened_malloc
+            
             ;;
         13)
             echo 'Clear system (journald) logs'         # Credit: https://privacy.sexy
@@ -335,8 +335,8 @@ while [ "$CHOICE -ne 4" ]; do
                 echo "5 - Set AdGuard DNS       (Some Logs, Always ECS)"
                 echo "6 - Delete custom_dns.conf"
                 echo "7 - Exit"
-                echo -n "Enter Number: "
-                read main_memu_select
+                read -p "Enter Number: " main_memu_select
+                
                 if [ $main_memu_select == 1 ]; then
                     clear
                     dns_quad9_memu
@@ -374,8 +374,7 @@ while [ "$CHOICE -ne 4" ]; do
                 echo "Quad9 DNS"
                 echo "1 - Set, filtered only malware."
                 echo "2 - Exit"
-                echo -n "Enter Number: "
-                read dns_quad9_select
+                read -p "Enter Number: " dns_quad9_select
 
                 if [ $dns_quad9_select == 1 ]; then
                     start_resolv_conf
@@ -403,8 +402,7 @@ while [ "$CHOICE -ne 4" ]; do
                 echo "1 - Set, unfiltered."
                 echo "2 - Set, filtered ads, tracker, malware. (with Mullvad blocklist)"
                 echo "3 - Exit"
-                echo -n "Enter Number: "
-                read dns_mullvad_select
+                read -p "Enter Number: " dns_mullvad_select
 
                 if [ $dns_mullvad_select == 1 ]; then
                     start_resolv_conf
@@ -441,8 +439,7 @@ while [ "$CHOICE -ne 4" ]; do
                 echo "3 - Set, filtered ads, tracker, malware. (With Hagezi-Pro blocklist - https://github.com/hagezi/dns-blocklists)"
                 echo "4 - Set, filtered ads, tracker, malware. (With Hagezi-Ultimate blocklist - https://github.com/hagezi/dns-blocklists)"
                 echo "5 - Exit"
-                echo -n "Enter Number: "
-                read dns_controld_select
+                read -p "Enter Number: " dns_controld_select
 
                 if [ $dns_controld_select == 1 ]; then
                     start_resolv_conf
@@ -505,8 +502,7 @@ while [ "$CHOICE -ne 4" ]; do
                 echo "2 - Set, filtered only malware."
                 echo "3 - Set, family filter."
                 echo "4 - Exit"
-                echo -n "Enter Number: "
-                read dns_cloudflare_select
+                read -p "Enter Number: " dns_cloudflare_select
 
                 if [ $dns_cloudflare_select == 1 ]; then
                     start_resolv_conf
@@ -557,8 +553,7 @@ while [ "$CHOICE -ne 4" ]; do
                 echo "2 - Set, filtered ads, tracker, malware. (With AdGuard blocklist)"
                 echo "3 - Set, family filter."
                 echo "4 - Exit"
-                echo -n "Enter Number: "
-                read dns_adguard_select
+                read -p "Enter Number: " dns_adguard_select
 
                 if [ $dns_adguard_select == 1 ]; then
                     start_resolv_conf
