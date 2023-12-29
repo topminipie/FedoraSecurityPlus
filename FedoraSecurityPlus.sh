@@ -108,7 +108,6 @@ while [ "$CHOICE -ne 4" ]; do
         7)
             echo "Enabling FlatHub"
             flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-            flatpak update --noninteractive
             notify-send "FlatHub has now been enabled" --expire-time=1000
             ;;
         8)
