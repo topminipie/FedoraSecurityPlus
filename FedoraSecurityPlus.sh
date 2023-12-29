@@ -239,17 +239,14 @@ while [ "$CHOICE -ne 4" ]; do
             ### More isolate
             echo "Isolate NetworkManager, irqbalance, ModemManager"
             # NetworkManager
-            sudo rm -rf /etc/systemd/system/NetworkManager.service.d
             sudo mkdir -p /etc/systemd/system/NetworkManager.service.d
             curl -fsSL https://github.com/divestedcg/Brace/raw/master/brace/usr/lib/systemd/system/NetworkManager.service.d/99-brace.conf > /home/$USER/.tmp_FedoraSecurityPlus/99-brace.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/99-brace.conf /etc/systemd/system/NetworkManager.service.d/99-brace.conf
             # irqbalance
-            sudo rm -rf /etc/systemd/system/irqbalance.service.d
             sudo mkdir -p /etc/systemd/system/irqbalance.service.d
             curl -fsSL https://github.com/divestedcg/Brace/raw/master/brace/usr/lib/systemd/system/irqbalance.service.d/99-brace.conf > /home/$USER/.tmp_FedoraSecurityPlus/99-brace.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/99-brace.conf /etc/systemd/system/irqbalance.service.d/99-brace.conf
             # ModemManager
-            sudo rm -rf /etc/systemd/system/ModemManager.service.d
             sudo mkdir -p /etc/systemd/system/ModemManager.service.d
             curl -fsSL https://github.com/divestedcg/Brace/raw/master/brace/usr/lib/systemd/system/ModemManager.service.d/99-brace.conf > /home/$USER/.tmp_FedoraSecurityPlus/99-brace.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/99-brace.conf /etc/systemd/system/ModemManager.service.d/99-brace.conf
