@@ -1,4 +1,7 @@
 # FedoraSecurityPlus
+
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
+
 FedoraSecurityPlus is a post-install script for upstream version of Fedora. It also focuses on security.
 
 This script has been tested for: Fedora 39, Fedora 38.
