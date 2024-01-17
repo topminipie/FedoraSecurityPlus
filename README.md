@@ -35,6 +35,17 @@ Execute it (read [Usage](#usage) before executing)
 
 `flatpak-packages.txt` > Bunch of most used flatpak softwares, you **MUST** edit it to fit your needs. Check [Flathub](https://flathub.org/home) and search your software to find the flatpak ID.
 
+## Known Issues
+
+Restricts the use of ptrace to root. This might break some programs running under WINE.
+A workaround for WINE would be to give the wineserver and wine-preloader ptrace capabilities.
+Fix:
+```
+  sudo dnf install libcap
+  sudo setcap cap_sys_ptrace=eip /usr/bin/wineserver
+  sudo setcap cap_sys_ptrace=eip /usr/bin/wine-preloader
+```
+
 ## Credits
 
 [PYFO](https://github.com/d4rklynk/PYFO) ([GPL-3.0](https://github.com/d4rklynk/PYFO/blob/main/LICENSE))
