@@ -11,6 +11,9 @@ MENU="Please Choose one of the following options:"
 # Credits: https://github.com/topminipie/FedoraSecurityPlus#credits
 
 # TODO:
+            ### /usr/bin
+            https://github.com/Kicksecure/security-misc/commit/0efee2f50fd38feade7700c2f033cc3d4c200d34
+            
             ### umask
             #echo "Set umask to 077 for all users instead of 022"
             #sudo bash -c 'echo "umask 077" > /etc/profile.d/set-umask077-for-all-users.sh'
