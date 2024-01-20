@@ -45,7 +45,7 @@ Fix:
   sudo setcap cap_sys_ptrace=eip /usr/bin/wineserver
   sudo setcap cap_sys_ptrace=eip /usr/bin/wine-preloader
 ```
-or globally enable for all processes
+or globally enable ptrace for all processes (not recommended)
 ```
   sudo sed -i 's/kernel.yama.ptrace_scope=2/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/30_security-misc.conf
 ```
