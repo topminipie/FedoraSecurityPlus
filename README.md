@@ -40,13 +40,13 @@ Execute it (read [Usage](#usage) before executing)
 Restricts the use of ptrace to root. This might break some programs running under WINE.
 A workaround for WINE would be to give the wineserver and wine-preloader ptrace capabilities.
 Fix:
-```
+```sh
   sudo dnf install libcap
   sudo setcap cap_sys_ptrace=eip /usr/bin/wineserver
   sudo setcap cap_sys_ptrace=eip /usr/bin/wine-preloader
 ```
 or globally enable ptrace for all processes (not recommended)
-```
+```sh
   sudo sed -i 's/kernel.yama.ptrace_scope=2/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/30_security-misc.conf
 ```
 
