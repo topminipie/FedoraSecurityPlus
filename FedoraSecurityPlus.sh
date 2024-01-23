@@ -53,6 +53,7 @@ OPTIONS=(1 "Speed up DNF"
          13 "Clear system (journald) logs files"
          14 "Clear Bash, Python history"
          15 "Set DNS Server"
+         16 "Enable more entropy sources (jitterentropy_rngd)"
          99 "Quit")
 
 while [ "$CHOICE -ne 4" ]; do
@@ -598,6 +599,93 @@ while [ "$CHOICE -ne 4" ]; do
             }
 
             main_memu   # Start main menu
+            ;;
+         16)
+            function build_jitterentropy_rngd {
+                echo 'Install GCC'
+                sudo dnf install -y gcc
+
+                echo 'Download source jitterentropy-rngd'
+                git clone https://github.com/smuellerDD/jitterentropy-rngd.git
+
+                cd ./jitterentropy-rngd
+
+                echo 'Build jitterentropy-rngd'
+                make
+
+                echo 'Install jitterentropy-rngd'
+                sudo make install
+
+                echo 'Enable jitterentropy'
+                sudo systemctl enable --now jitterentropy
+
+                cd ..
+
+                echo 'Remove source and binary'
+                rm -rf ./jitterentropy-rngd
+
+                echo
+                echo
+                read -p "Remove GCC? [y/N]: " gcc_select
+
+                if [ $gcc_select == y ]; then
+                    sudo dnf remove -y gcc
+                    echo
+                    echo "Done"
+
+                else
+                    echo
+                    echo "Done"
+
+                fi
+            }
+            
+            function jitterentropy_rngd_install {
+                echo "jitterentropy_rngd not found"
+                echo
+                echo "Build jitterentropy_rngd?"
+                echo "1 - Yes"
+                echo "2 - No"
+                read -p "Enter Number: " jitterentropy_rngd_install_select
+                    
+                if [ $jitterentropy_rngd_install_select == 1 ]; then
+                    build_jitterentropy_rngd
+
+                elif [ $jitterentropy_rngd_install_select == 2 ]; then
+                    echo "Exit"
+
+                else
+                    echo "Invalid Input"
+
+                fi
+            }
+            
+            function verify_jitterentropy_rngd{
+                if [ -f "/usr/local/sbin/jitterentropy-rngd" ]; then
+                    echo "jitterentropy_rngd already installed"
+                    sudo systemctl enable --now jitterentropy
+
+                else
+                    jitterentropy_rngd_install
+
+                fi
+            }
+            
+            echo "Enable more entropy sources (jitterentropy_rngd)?"
+            echo "1 - Yes"
+            echo "2 - No"
+            read -p "Enter Number: " jitterentropy_rngd_select
+            
+            if [ $jitterentropy_rngd_select == 1 ]; then
+                verify_jitterentropy_rngd
+
+            elif [ $jitterentropy_rngd_select == 2 ]; then
+                echo "Exit"
+
+            else
+                echo "Invalid Input"
+
+            fi
             ;;
         99)
             rm -rf /home/$USER/.tmp_FedoraSecurityPlus  # Delete temp dir
