@@ -660,7 +660,7 @@ while [ "$CHOICE -ne 4" ]; do
                 fi
             }
             
-            function verify_jitterentropy_rngd{
+            function verify_jitterentropy_rngd {
                 if [ -f "/usr/local/sbin/jitterentropy-rngd" ]; then
                     echo "jitterentropy_rngd already installed"
                     sudo systemctl enable --now jitterentropy
