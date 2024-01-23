@@ -274,7 +274,7 @@ while [ "$CHOICE -ne 4" ]; do
             fi
 
             #echo "Installing Divested repo"
-            #sudo dnf install -y https://gitlab.com/divested/divested-release/-/jobs/4361602859/artifacts/raw/build/noarch/divested-release-20230406-2.noarch.rpm
+            #sudo dnf install -y https://gitlab.com/divested/divested-release/-/jobs/5719496502/artifacts/raw/build/noarch/divested-release-20231210-2.noarch.rpm
             #echo "Installing hardened_malloc"
             #sudo dnf install -y hardened_malloc
             
