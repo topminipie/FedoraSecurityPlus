@@ -27,9 +27,6 @@ MENU="Please Choose one of the following options:"
             #sudo firewall-cmd --add-protocol=ipv6-icmp --permanent
             #sudo firewall-cmd --add-service=dhcpv6-client --permanent
 
-            #echo "Add more entropy sources (jitterentropy)"     # https://github.com/Kicksecure/security-misc/blob/master/usr/lib/modules-load.d/30_security-misc.conf
-            #sudo sh -c 'echo "jitterentropy_rng" > /usr/lib/modules-load.d/30_security-misc.conf'
-
 # Check to see if Dialog is installed, if not install it - Thanks Kinkz_nl
 if [ $(rpm -q dialog 2>/dev/null | grep -c "dialog is not installed") -eq 1 ]; then
 sudo dnf install -y dialog
