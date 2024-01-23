@@ -265,19 +265,15 @@ while [ "$CHOICE -ne 4" ]; do
             read -p "Install hardened_malloc? [y/N]: " hardened_malloc_select
 
             if [ $hardened_malloc_select == y ]; then
-                sudo dnf install https://gitlab.com/divested/rpm-hardened_malloc/-/jobs/5736638991/artifacts/raw/x86_64/hardened_malloc-12-9.fc36.x86_64.rpm
+                sudo dnf install -y 'https://divested.dev/rpm/fedora/divested-release-20231210-2.noarch.rpm'
+                sudo dnf config-manager --save --setopt=divested.includepkgs=divested-release,hardened_malloc
+                sudo dnf -y install hardened_malloc
                 notify-send "hardened_malloc installed (you must reboot to make it effective)" --expire-time=1000
                 
             else
                 echo "Exit"
 
             fi
-
-            #echo "Installing Divested repo"
-            #sudo dnf install -y https://gitlab.com/divested/divested-release/-/jobs/5719496502/artifacts/raw/build/noarch/divested-release-20231210-2.noarch.rpm
-            #echo "Installing hardened_malloc"
-            #sudo dnf install -y hardened_malloc
-            
             ;;
         13)
             echo 'Clear system (journald) logs'         # Credit: https://privacy.sexy
