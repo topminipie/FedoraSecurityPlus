@@ -12,20 +12,24 @@ So you will not have a bunch of sketchy software that you don't need.
 ## Install
 
 Clone this repo
-
-`git clone https://github.com/topminipie/FedoraSecurityPlus`
+```sh
+git clone https://github.com/topminipie/FedoraSecurityPlus
+```
 
 Switch directory
-
-`cd ~/FedoraSecurityPlus`
+```sh
+cd ~/FedoraSecurityPlus
+```
 
 Make it executable
-
-`chmod +x FedoraSecurityPlus.sh`
+```sh
+chmod +x FedoraSecurityPlus.sh
+```
 
 Execute it (read [Usage](#usage) before executing)
-
-`./FedoraSecurityPlus.sh`
+```sh
+./FedoraSecurityPlus.sh
+```
 
 ## Usage
 
