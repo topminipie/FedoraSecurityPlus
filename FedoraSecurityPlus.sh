@@ -256,7 +256,7 @@ while [ "$CHOICE -ne 4" ]; do
             notify-send "Fedora is hardened (you must reboot to make it effective)" --expire-time=1000
             ;;
         12)
-            echo "Warning!!!"            # TODO: verify
+            echo "Warning!!!"
             echo
             echo "Some software is incompatible with hardened_malloc!!!"
             echo "Read this before you use it:"
