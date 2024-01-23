@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-HEIGHT=23
+HEIGHT=24
 WIDTH=90
 CHOICE_HEIGHT=4
 BACKTITLE="My Mini Script for Fedora Linux by topminipie"
