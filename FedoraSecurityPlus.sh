@@ -123,11 +123,12 @@ while [ "$CHOICE -ne 4" ]; do
             source 'flatpak-install.sh'
             ;;
         10)
-            echo "Installing Videos packages"
-            sudo dnf install -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel
+            echo "Installing Multimedia libraries & H264 Codec"      
+            sudo dnf install -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-plugin-libav --exclude=gstreamer1-plugins-bad-free-devel
             sudo dnf install -y lame\* --exclude=lame-devel
             sudo dnf group upgrade -y --with-optional Multimedia
-            sudo dnf update -y
+            #
+            sudo dnf install gstreamer1-plugin-openh264 mozilla-openh264
             notify-send "All done" --expire-time=1000
             ;;
         11)
