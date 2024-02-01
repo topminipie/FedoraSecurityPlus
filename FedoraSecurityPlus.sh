@@ -620,14 +620,14 @@ while [ "$CHOICE -ne 4" ]; do
 
                 echo
                 echo
-                read -p "Remove GCC? [y/N]: " gcc_select
+                read -p "Remove GCC? [Y/n]: " gcc_select
 
-                if [ $gcc_select == y ]; then
-                    sudo dnf remove -y gcc
+                if [ $gcc_select == n ]; then
                     echo
                     echo "Done"
 
                 else
+                    sudo dnf remove -y gcc
                     echo
                     echo "Done"
 
@@ -637,7 +637,7 @@ while [ "$CHOICE -ne 4" ]; do
             function jitterentropy_rngd_install {
                 echo "jitterentropy_rngd not found"
                 echo
-                echo "Build jitterentropy_rngd?"
+                echo "Build and install jitterentropy_rngd?"
                 echo "1 - Yes"
                 echo "2 - No"
                 read -p "Enter Number: " jitterentropy_rngd_install_select
