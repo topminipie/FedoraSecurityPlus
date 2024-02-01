@@ -2,12 +2,11 @@
 
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
 
-FedoraSecurityPlus is a post-install script for upstream version of Fedora. It also focuses on security.
+FedoraSecurityPlus is a script for enhancing Fedora security.
 
 This script has been tested for: Fedora 39, Fedora 38.
 
-It is meant to use right after you installed Fedora. This script will just install needed software that most people probably use.
-So you will not have a bunch of sketchy software that you don't need.
+
 
 ## Install
 
@@ -41,6 +40,8 @@ Execute it (read [Usage](#usage) before executing)
 
 ## Known Issues
 
+#### ptrace
+
 Restricts the use of ptrace to root. This might break some programs running under WINE.
 A workaround for WINE would be to give the wineserver and wine-preloader ptrace capabilities.
 Fix:
@@ -52,6 +53,19 @@ Fix:
 or globally allow ptrace for all processes (not recommended)
 ```sh
   sudo sed -i 's/kernel.yama.ptrace_scope=2/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/30_security-misc.conf
+```
+
+#
+
+#### MAC randomization and IPv6 Privacy...
+
+Read more about the problems [here](https://github.com/Kicksecure/security-misc/issues/184)
+
+Delete configs:
+```sh
+  sudo rm -f /etc/NetworkManager/conf.d/80_ipv6-privacy.conf
+  sudo rm -f /etc/NetworkManager/conf.d/80_randomize-mac.conf
+  sudo rm -f /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf
 ```
 
 ## Credits
