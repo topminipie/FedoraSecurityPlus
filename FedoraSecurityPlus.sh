@@ -11,9 +11,6 @@ MENU="Please Choose one of the following options:"
 # Credits: https://github.com/topminipie/FedoraSecurityPlus#credits
 
 # TODO:
-            ### /usr/bin
-            # https://github.com/Kicksecure/security-misc/commit/0efee2f50fd38feade7700c2f033cc3d4c200d34
-            
             ### umask
             #echo "Set umask to 077 for all users instead of 022"
             #sudo bash -c 'echo "umask 077" > /etc/profile.d/set-umask077-for-all-users.sh'
@@ -142,15 +139,36 @@ while [ "$CHOICE -ne 4" ]; do
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc_kexec-disable.conf /etc/sysctl.d/30_security-misc_kexec-disable.conf
 
             echo "Enable mac address randomization"
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/NetworkManager/conf.d/80_ipv6-privacy.conf > /home/$USER/.tmp_FedoraSecurityPlus/80_ipv6-privacy.conf
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/80_ipv6-privacy.conf /etc/NetworkManager/conf.d/80_ipv6-privacy.conf
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/NetworkManager/conf.d/80_randomize-mac.conf > /home/$USER/.tmp_FedoraSecurityPlus/80_randomize-mac.conf
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/80_randomize-mac.conf /etc/NetworkManager/conf.d/80_randomize-mac.conf
-            # enable ipv6 privacy
+            sudo mkdir -p /etc/NetworkManager/conf.d/
+            
+            # 80_ipv6-privacy.conf
+            sudo sh -c 'echo -n > /etc/NetworkManager/conf.d/80_ipv6-privacy.conf'
+            sudo sh -c 'echo "[connection]" >> /etc/NetworkManager/conf.d/80_ipv6-privacy.conf'
+            sudo sh -c 'echo "ipv6.ip6-privacy=2" >> /etc/NetworkManager/conf.d/80_ipv6-privacy.conf'
+
+            # 80_randomize-mac.conf
+            sudo sh -c 'echo -n > /etc/NetworkManager/conf.d/80_randomize-mac.conf'
+            sudo sh -c 'echo "[device-mac-randomization]" >> /etc/NetworkManager/conf.d/80_randomize-mac.conf'
+            sudo sh -c 'echo "wifi.scan-rand-mac-address=yes" >> /etc/NetworkManager/conf.d/80_randomize-mac.conf'
+            sudo sh -c 'echo "" >> /etc/NetworkManager/conf.d/80_randomize-mac.conf'
+            sudo sh -c 'echo "[connection-mac-randomization]" >> /etc/NetworkManager/conf.d/80_randomize-mac.conf'
+            sudo sh -c 'echo "ethernet.cloned-mac-address=random" >> /etc/NetworkManager/conf.d/80_randomize-mac.conf'
+            sudo sh -c 'echo "wifi.cloned-mac-address=random" >> /etc/NetworkManager/conf.d/80_randomize-mac.conf'
+
+            # 80_ipv6-privacy-extensions.conf
             sudo mkdir -p /etc/systemd/networkd.conf.d/
             sudo sh -c 'echo -n > /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
             sudo sh -c 'echo "[Network]" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
             sudo sh -c 'echo "IPv6PrivacyExtensions=kernel" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
+
+            # Disabled https://github.com/Kicksecure/security-misc/issues/184
+            #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/NetworkManager/conf.d/80_ipv6-privacy.conf > /home/$USER/.tmp_FedoraSecurityPlus/80_ipv6-privacy.conf
+            #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/80_ipv6-privacy.conf /etc/NetworkManager/conf.d/80_ipv6-privacy.conf
+            #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/NetworkManager/conf.d/80_randomize-mac.conf > /home/$USER/.tmp_FedoraSecurityPlus/80_randomize-mac.conf
+            #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/80_randomize-mac.conf /etc/NetworkManager/conf.d/80_randomize-mac.conf
+            # enable ipv6 privacy
+            #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf > /home/$USER/.tmp_FedoraSecurityPlus/80_ipv6-privacy-extensions.conf
+            #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/80_ipv6-privacy-extensions.conf /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf
 
             echo "Disable CoreDump"
             #
@@ -209,26 +227,26 @@ while [ "$CHOICE -ne 4" ]; do
             # ???
             sudo rm -f /etc/modprobe.d/firewalld-sysctls.conf
             echo 'Install "disabled-by-security-misc" echo script'
-            #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-bluetooth-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-bluetooth-by-security-misc    # Not used
-            #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-bluetooth-by-security-misc /bin/disabled-bluetooth-by-security-misc
-            #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-cdrom-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-cdrom-by-security-misc            # Not used
-            #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-cdrom-by-security-misc /bin/disabled-cdrom-by-security-misc
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-filesys-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-filesys-by-security-misc
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-filesys-by-security-misc /bin/disabled-filesys-by-security-misc
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-firewire-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-firewire-by-security-misc
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-firewire-by-security-misc /bin/disabled-firewire-by-security-misc
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-intelme-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-intelme-by-security-misc
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-intelme-by-security-misc /bin/disabled-intelme-by-security-misc
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-msr-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-msr-by-security-misc
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-msr-by-security-misc /bin/disabled-msr-by-security-misc
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-netfilesys-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-netfilesys-by-security-misc
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-netfilesys-by-security-misc /bin/disabled-netfilesys-by-security-misc
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-network-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-network-by-security-misc
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-network-by-security-misc /bin/disabled-network-by-security-misc
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-thunderbolt-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-thunderbolt-by-security-misc
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-thunderbolt-by-security-misc /bin/disabled-thunderbolt-by-security-misc
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/bin/disabled-vivid-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-vivid-by-security-misc
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-vivid-by-security-misc /bin/disabled-vivid-by-security-misc
+            #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-bluetooth-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-bluetooth-by-security-misc    # Not used
+            #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-bluetooth-by-security-misc /usr/bin/disabled-bluetooth-by-security-misc
+            #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-cdrom-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-cdrom-by-security-misc            # Not used
+            #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-cdrom-by-security-misc /usr/bin/disabled-cdrom-by-security-misc
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-filesys-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-filesys-by-security-misc
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-filesys-by-security-misc /usr/bin/disabled-filesys-by-security-misc
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-firewire-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-firewire-by-security-misc
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-firewire-by-security-misc /usr/bin/disabled-firewire-by-security-misc
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-intelme-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-intelme-by-security-misc
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-intelme-by-security-misc /usr/bin/disabled-intelme-by-security-misc
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-msr-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-msr-by-security-misc
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-msr-by-security-misc /usr/bin/disabled-msr-by-security-misc
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-netfilesys-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-netfilesys-by-security-misc
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-netfilesys-by-security-misc /usr/bin/disabled-netfilesys-by-security-misc
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-network-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-network-by-security-misc
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-network-by-security-misc /usr/bin/disabled-network-by-security-misc
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-thunderbolt-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-thunderbolt-by-security-misc
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-thunderbolt-by-security-misc /usr/bin/disabled-thunderbolt-by-security-misc
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/bin/disabled-vivid-by-security-misc > /home/$USER/.tmp_FedoraSecurityPlus/disabled-vivid-by-security-misc
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/disabled-vivid-by-security-misc /usr/bin/disabled-vivid-by-security-misc
 
             ### NTS (Time synchronization)
             echo "Replicate chrony.conf from GrapheneOS and hardening chrony demon"
