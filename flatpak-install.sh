@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Check if flatpak is enabled
 if ! flatpak --version > /dev/null 2>&1; then
