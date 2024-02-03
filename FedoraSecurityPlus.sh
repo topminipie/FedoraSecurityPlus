@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 HEIGHT=24
 WIDTH=90
