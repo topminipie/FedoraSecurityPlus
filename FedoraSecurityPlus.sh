@@ -26,6 +26,7 @@ MENU="Please Choose one of the following options:"
 
 # Check to see if Dialog is installed, if not install it - Thanks Kinkz_nl
 if [ $(rpm -q dialog 2>/dev/null | grep -c "dialog is not installed") -eq 1 ]; then
+echo "Need install dialog utility"
 sudo dnf install -y dialog
 fi
 
