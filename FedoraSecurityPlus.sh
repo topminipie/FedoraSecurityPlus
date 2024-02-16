@@ -126,7 +126,7 @@ while [ "$CHOICE -ne 4" ]; do
             sudo dnf install -y lame\* --exclude=lame-devel
             sudo dnf group upgrade -y --with-optional Multimedia
             #
-            sudo dnf install -y gstreamer1-plugin-openh264 mozilla-openh264
+            sudo dnf install -y mozilla-openh264
             notify-send "All done" --expire-time=1000
             ;;
         11)
