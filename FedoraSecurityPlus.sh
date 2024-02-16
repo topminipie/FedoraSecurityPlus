@@ -122,7 +122,7 @@ while [ "$CHOICE -ne 4" ]; do
             ;;
         10)
             echo "Installing Multimedia libraries & H264 Codec"      
-            sudo dnf install -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-plugin-libav --exclude=gstreamer1-plugins-bad-free-devel
+            sudo dnf install -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-plugin-libav --exclude=gstreamer1-plugins-bad-free-{devel,opencv}
             sudo dnf install -y lame\* --exclude=lame-devel
             sudo dnf group upgrade -y --with-optional Multimedia
             #
@@ -178,9 +178,7 @@ while [ "$CHOICE -ne 4" ]; do
             sudo sh -c 'echo "[Coredump]" >> /lib/systemd/coredump.conf.d/30_security-misc.conf'
             sudo sh -c 'echo "Storage=none" >> /lib/systemd/coredump.conf.d/30_security-misc.conf'
             #
-            sudo sh -c 'echo -n > /etc/security/limits.d/30_security-misc.conf'
-            sudo sh -c 'echo "## Disable coredumps." >> /etc/security/limits.d/30_security-misc.conf'
-            sudo sh -c 'echo "* hard core 0" >> /etc/security/limits.d/30_security-misc.conf'
+            sudo sh -c 'echo "* hard core 0" > /etc/security/limits.d/30_security-misc.conf'
 
             echo "Clear system crash and CoreDump files"    # Credit: https://privacy.sexy
             sudo rm -rfv /var/crash/*
