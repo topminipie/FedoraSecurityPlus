@@ -86,4 +86,4 @@ Delete configs:
 
 [Madaidans Linux Hardening](https://madaidans-insecurities.github.io/guides/linux-hardening.html) (*¯\ _ (ツ)_/¯*)
 
-[PrivacyGuides.org](https://www.privacyguides.org/) ([LICENSE](https://github.com/privacyguides/privacyguides.org/blob/main/LICENSE))
+[PrivacyGuides.org](https://www.privacyguides.org/) ([CC-BY-ND-4.0](https://github.com/privacyguides/privacyguides.org/blob/main/LICENSE))
