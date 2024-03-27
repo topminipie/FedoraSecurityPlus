@@ -613,6 +613,7 @@ while [ "$CHOICE -ne 4" ]; do
             ;;
          16)
             function build_jitterentropy_rngd {
+                clear
                 echo 'Install GCC'
                 sudo dnf install -y gcc
 
@@ -658,6 +659,7 @@ while [ "$CHOICE -ne 4" ]; do
             
             if [ $jitterentropy_rngd_select == 1 ]; then
                 if [ -f "/usr/local/sbin/jitterentropy-rngd" ]; then
+                    clear
                     echo "jitterentropy_rngd is already installed"
                     sudo systemctl enable --now jitterentropy
                     echo "Reinstall?"
