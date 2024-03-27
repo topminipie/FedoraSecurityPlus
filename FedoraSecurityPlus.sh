@@ -661,7 +661,9 @@ while [ "$CHOICE -ne 4" ]; do
                 if [ -f "/usr/local/sbin/jitterentropy-rngd" ]; then
                     clear
                     echo "jitterentropy_rngd is already installed"
+                    echo
                     sudo systemctl enable --now jitterentropy
+                    echo
                     echo "Reinstall?"
                     echo "1 - Yes"
                     echo "2 - No"
