@@ -650,45 +650,32 @@ while [ "$CHOICE -ne 4" ]; do
 
                 fi
             }
-            
-            function jitterentropy_rngd_install {
-                echo "jitterentropy_rngd not found"
-                echo
-                echo "Build and install jitterentropy_rngd?"
-                echo "1 - Yes"
-                echo "2 - No"
-                read -p "Enter Number: " jitterentropy_rngd_install_select
-                    
-                if [ $jitterentropy_rngd_install_select == 1 ]; then
-                    build_jitterentropy_rngd
 
-                elif [ $jitterentropy_rngd_install_select == 2 ]; then
-                    echo "Exit"
-
-                else
-                    echo "Invalid Input"
-
-                fi
-            }
-            
-            function verify_jitterentropy_rngd {
-                if [ -f "/usr/local/sbin/jitterentropy-rngd" ]; then
-                    echo "jitterentropy_rngd already installed"
-                    sudo systemctl enable --now jitterentropy
-
-                else
-                    jitterentropy_rngd_install
-
-                fi
-            }
-            
             echo "Enable more entropy sources (jitterentropy_rngd)?"
             echo "1 - Yes"
             echo "2 - No"
             read -p "Enter Number: " jitterentropy_rngd_select
             
             if [ $jitterentropy_rngd_select == 1 ]; then
-                verify_jitterentropy_rngd
+                if [ -f "/usr/local/sbin/jitterentropy-rngd" ]; then
+                    echo "jitterentropy_rngd is already installed"
+                    sudo systemctl enable --now jitterentropy
+                    echo "Reinstall?"
+                    echo "1 - Yes"
+                    echo "2 - No"
+                    read -p "Enter Number: " jitterentropy_rngd_select_reinstall
+                    if [ $jitterentropy_rngd_select_reinstall == 1 ]; then
+                        build_jitterentropy_rngd
+                        
+                    else
+                        echo "Invalid Input"
+
+                    fi
+
+                else
+                    build_jitterentropy_rngd
+
+                fi
 
             elif [ $jitterentropy_rngd_select == 2 ]; then
                 echo "Exit"
