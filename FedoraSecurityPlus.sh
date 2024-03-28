@@ -34,20 +34,20 @@ rm -rf /home/$USER/.tmp_FedoraSecurityPlus  # Delete old temp dir
 mkdir /home/$USER/.tmp_FedoraSecurityPlus   # Make temp dir
 
 OPTIONS=(1 "Speed up DNF"
-         2 "Enable AutoUpdates"
-         3 "Update System And Reboot Now! (Offline-Upgrade)"
-         4 "Update Firmware - If your system supports fw update delivery"
+         2 "Enable auto updates"
+         3 "Update system and reboot Now!!! (Offline-Upgrade)"
+         4 "Update Firmware"
          5 "Install Basic Software - Check basic-dnf.txt"
          6 "Install Extras Software - Check extras-dnf.txt"
          7 "Enable FlatHub repo"
-         8 "Update Flatpak Apps And Delete Unused Runtime"
-         9 "Install some flatpak software - Check flatpak-packages.txt"
-         10 "Install Videos packages - Video codec and stuff as per the official doc"
+         8 "Update Flatpak apps and delete unused runtime"
+         9 "Install some Flatpak software - Check flatpak-packages.txt"
+         10 "Install Multimedia libraries & H264 codec"
          11 "Harden your Fedora"
-         12 "Install hardened_malloc"
+         12 "Install GrapheneOS hardened_malloc"
          13 "Clear system (journald) logs files"
          14 "Clear Bash, Python history"
-         15 "Set DNS Server"
+         15 "Set secure DNS server"
          16 "Enable more entropy sources (jitterentropy_rngd)"
          99 "Quit")
 
@@ -72,19 +72,16 @@ while [ "$CHOICE -ne 4" ]; do
 
             # Credit https://github.com/divestedcg/Brace/blob/master/brace/usr/bin/brace-supplemental-changes#L35
             sudo sed -i 's/countme=1/countme=0/' /etc/yum.repos.d/*.repo
-            notify-send "Your DNF config has now been amended" --expire-time=1000
             ;;
         2)
-            echo "Enable AutoUpdates"
+            echo "Enable auto updates"
             sudo dnf install -y dnf-automatic
             sudo systemctl enable --now dnf-automatic-install.timer
-            notify-send "System updated - Reboot now" --expire-time=1000
             ;;
         3)
-            echo "Update System And Reboot Now (Offline-Upgrade)"
+            echo "Update system and reboot Now!!! (Offline-Upgrade)"
             sudo dnf offline-upgrade download -y
             sudo dnf offline-upgrade reboot
-            notify-send "Reboot..." --expire-time=1000
             ;;
         4)
             echo "Updating Firmware"
@@ -92,42 +89,36 @@ while [ "$CHOICE -ne 4" ]; do
             sudo fwupdmgr refresh --force
             sudo fwupdmgr get-updates -y
             sudo fwupdmgr update -y
-            notify-send "Firmware updated" --expire-time=1000
             ;;
         5)
             echo "Install Basic Software"
             sudo dnf install -y $(cat basic-dnf.txt)
-            notify-send "Basic Software have been installed" --expire-time=1000
             ;;
         6)
             echo "Installing Extras Software"
             sudo dnf install -y $(cat extras-dnf.txt)
-            notify-send "Extras Software have been installed" --expire-time=1000
             ;;
         7)
             echo "Enabling FlatHub"
             flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-            notify-send "FlatHub has now been enabled" --expire-time=1000
             ;;
         8)
-            echo "Update Flatpak Apps And Delete Unused RunTime"
+            echo "Update Flatpak apps and delete unused runtime"
             flatpak uninstall --unused --noninteractive
             flatpak update --noninteractive
             flatpak uninstall --unused --noninteractive
-            notify-send "Flatpak Apps Updated, Unused RunTime Deleted" --expire-time=1000
             ;;
         9)
             echo "Install some flatpak software"
             source 'flatpak-install.sh'
             ;;
         10)
-            echo "Installing Multimedia libraries & H264 Codec"      
+            echo "Installing Multimedia libraries & H264 сodec"      
             sudo dnf install -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-plugin-libav --exclude=gstreamer1-plugins-bad-free-{devel,opencv}
             sudo dnf install -y lame\* --exclude=lame-devel
             sudo dnf group upgrade -y --with-optional Multimedia
             #
             sudo dnf install -y mozilla-openh264
-            notify-send "All done" --expire-time=1000
             ;;
         11)
             echo "Hardening Fedora"
@@ -139,7 +130,7 @@ while [ "$CHOICE -ne 4" ]; do
             curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/sysctl.d/30_security-misc_kexec-disable.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc_kexec-disable.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc_kexec-disable.conf /etc/sysctl.d/30_security-misc_kexec-disable.conf
             sudo sed -i 's/kernel.yama.ptrace_scope=2/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/990-security-misc.conf    # Full disable ptrace (3) - https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
-            # Delete old files
+            # Delete old configs
             sudo rm -rf /etc/sysctl.d/30_security-misc_kexec-disable.conf
 
             echo "Enable mac address randomization"
@@ -165,7 +156,7 @@ while [ "$CHOICE -ne 4" ]; do
             sudo sh -c 'echo "[Network]" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
             sudo sh -c 'echo "IPv6PrivacyExtensions=kernel" >> /etc/systemd/networkd.conf.d/80_ipv6-privacy-extensions.conf'
 
-            # Disabled https://github.com/Kicksecure/security-misc/issues/184
+            # https://github.com/Kicksecure/security-misc/issues/184
             #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/NetworkManager/conf.d/80_ipv6-privacy.conf > /home/$USER/.tmp_FedoraSecurityPlus/80_ipv6-privacy.conf
             #sudo cp /home/$USER/.tmp_FedoraSecurityPlus/80_ipv6-privacy.conf /etc/NetworkManager/conf.d/80_ipv6-privacy.conf
             #curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/NetworkManager/conf.d/80_randomize-mac.conf > /home/$USER/.tmp_FedoraSecurityPlus/80_randomize-mac.conf
@@ -187,7 +178,7 @@ while [ "$CHOICE -ne 4" ]; do
             sudo rm -rfv /var/crash/*
             sudo rm -rfv /var/lib/systemd/coredump/
 
-            echo "Set hostname 'localhost'"
+            echo 'Set hostname "localhost"'
             sudo hostnamectl hostname "localhost"
 
             echo "Set generic machine id (https://github.com/Kicksecure/dist-base-files/blob/master/etc/machine-id)"
@@ -207,7 +198,6 @@ while [ "$CHOICE -ne 4" ]; do
             #sudo curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/etc/default/grub.d/40_kernel_hardening.cfg > /etc/grub.d/40_kernel_hardening.cfg
             #sudo curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/etc/default/grub.d/41_quiet.cfg > /etc/grub.d/41_quiet.cfg
             #sudo grub2-mkconfig -o /boot/grub2/grub.cfg
-            # TODO: check NoVidia, unroot curl
 
             # sudo bash -c 'sed -i '6iGRUB_CMDLINE_LINUX_DEFAULT="slab_nomerge init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on vsyscall=none debugfs=off oops=panic lockdown=confidentiality mce=0 quiet loglevel=0 spectre_v2=on spec_store_bypass_disable=on tsx=off tsx_async_abort=full,nosmt mds=full,nosmt l1tf=full,force nosmt=force kvm.nx_huge_pages=force randomize_kstack_offset=on"''
             # sudo grub2-mkconfig -o /boot/grub2/grub.cfg
@@ -258,7 +248,7 @@ while [ "$CHOICE -ne 4" ]; do
             sudo systemctl restart chronyd
 
             ### More isolate
-            echo "Isolate NetworkManager, irqbalance, ModemManager"
+            echo "Isolate NetworkManager, irqbalance, ModemManager" 
             # NetworkManager
             sudo mkdir -p /etc/systemd/system/NetworkManager.service.d
             curl -fsSL https://github.com/divestedcg/Brace/raw/master/brace/usr/lib/systemd/system/NetworkManager.service.d/99-brace.conf > /home/$USER/.tmp_FedoraSecurityPlus/99-brace.conf
@@ -286,7 +276,6 @@ while [ "$CHOICE -ne 4" ]; do
                 sudo dnf install -y 'https://divested.dev/rpm/fedora/divested-release-20231210-2.noarch.rpm'
                 sudo dnf config-manager --save --setopt=divested.includepkgs=divested-release,hardened_malloc
                 sudo dnf -y install hardened_malloc
-                notify-send "hardened_malloc installed (you must reboot to make it effective)" --expire-time=1000
                 
             else
                 echo "Exit"
@@ -294,17 +283,15 @@ while [ "$CHOICE -ne 4" ]; do
             fi
             ;;
         13)
-            echo 'Clear system (journald) logs'         # Credit: https://privacy.sexy
+            echo "Clear system (journald) logs"         # Credit: https://privacy.sexy
             sudo journalctl --vacuum-time=1s
             sudo rm -rfv /run/log/journal/*
             sudo rm -rfv /var/log/journal/*
-            notify-send "Done" --expire-time=1000
             ;;
         14)
-            echo 'Clear Bash, Python history'
+            echo "Clear Bash, Python history"
             rm -f /home/$USER/.bash_history
             rm -f /home/$USER/.python_history
-            notify-send "Done" --expire-time=1000
             ;;
         15)
             function start_resolv_conf {
@@ -338,9 +325,9 @@ while [ "$CHOICE -ne 4" ]; do
                 echo "Please read this before choosing a DNS provider:"
                 echo "https://www.privacyguides.org/en/advanced/dns-overview"
                 echo "https://www.privacyguides.org/en/dns"
-                echo ""
+                echo
                 echo "You can check the installed DNS server with this command - resolvectl status"
-                echo ""
+                echo
                 echo "Please Choose one of the following options:"
                 echo "1 - Set Quad9 DNS         (Some Logs, No ECS)"
                 echo "2 - Set Mullvad DNS       (No Logs,   No ECS)"
@@ -673,9 +660,12 @@ while [ "$CHOICE -ne 4" ]; do
                     read -p "Enter Number: " jitterentropy_rngd_select_reinstall
                     if [ $jitterentropy_rngd_select_reinstall == 1 ]; then
                         build_jitterentropy_rngd
+
+                    elif [ $jitterentropy_rngd_select_reinstall == 2 ]; then
+                        echo "Exit"
                         
                     else
-                        echo "Invalid Input"
+                        echo "Invalid Inpu"
 
                     fi
 
