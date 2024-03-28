@@ -16,7 +16,7 @@ MENU="Please Choose one of the following options:"
             #sudo bash -c 'echo "umask 077" > /etc/profile.d/set-umask077-for-all-users.sh'
 
             ### Make home directory private
-            #chmod 700 /home/*
+            #sudo chmod 700 /home/*
 
             ### Firewall
             #echo "Set firewall to drop zone"
@@ -132,12 +132,15 @@ while [ "$CHOICE -ne 4" ]; do
         11)
             echo "Hardening Fedora"
             echo "Downloading sysctl files from Kicksecure"
-            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/sysctl.d/990-security-misc.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc.conf
-            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc.conf /etc/sysctl.d/30_security-misc.conf
+            curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/sysctl.d/990-security-misc.conf > /home/$USER/.tmp_FedoraSecurityPlus/990-security-misc.conf
+            sudo cp /home/$USER/.tmp_FedoraSecurityPlus/990-security-misc.conf /etc/sysctl.d/990-security-misc.conf
             curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/sysctl.d/30_silent-kernel-printk.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_silent-kernel-printk.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/30_silent-kernel-printk.conf /etc/sysctl.d/30_silent-kernel-printk.conf
             curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/sysctl.d/30_security-misc_kexec-disable.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc_kexec-disable.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc_kexec-disable.conf /etc/sysctl.d/30_security-misc_kexec-disable.conf
+            sudo sed -i 's/kernel.yama.ptrace_scope=2/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/990-security-misc.conf    # Full disable ptrace (3) - https://www.kernel.org/doc/Documentation/security/Yama.txt
+            # Delete old files
+            sudo rm -rf /etc/sysctl.d/30_security-misc_kexec-disable.conf
 
             echo "Enable mac address randomization"
             sudo mkdir -p /etc/NetworkManager/conf.d/
