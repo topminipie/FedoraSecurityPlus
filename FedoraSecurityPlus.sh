@@ -138,7 +138,7 @@ while [ "$CHOICE -ne 4" ]; do
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/30_silent-kernel-printk.conf /etc/sysctl.d/30_silent-kernel-printk.conf
             curl -fsSL https://github.com/Kicksecure/security-misc/raw/master/usr/lib/sysctl.d/30_security-misc_kexec-disable.conf > /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc_kexec-disable.conf
             sudo cp /home/$USER/.tmp_FedoraSecurityPlus/30_security-misc_kexec-disable.conf /etc/sysctl.d/30_security-misc_kexec-disable.conf
-            sudo sed -i 's/kernel.yama.ptrace_scope=2/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/990-security-misc.conf    # Full disable ptrace (3) - https://www.kernel.org/doc/Documentation/security/Yama.txt
+            sudo sed -i 's/kernel.yama.ptrace_scope=2/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/990-security-misc.conf    # Full disable ptrace (3) - https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
             # Delete old files
             sudo rm -rf /etc/sysctl.d/30_security-misc_kexec-disable.conf
 
