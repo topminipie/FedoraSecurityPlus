@@ -42,7 +42,18 @@ Execute it (read [Usage](#usage) before executing)
 
 #### ptrace
 
-Restricts the use of ptrace to root. This might break some programs running under WINE.
+(0) - Full allow ptrace for all processes
+```sh
+  sudo sed -i 's/kernel.yama.ptrace_scope=3/kernel.yama.ptrace_scope=0/g' /etc/sysctl.d/990-security-misc.conf
+```
+(1) - [Kernel Doc](https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html)
+```sh
+  sudo sed -i 's/kernel.yama.ptrace_scope=3/kernel.yama.ptrace_scope=1/g' /etc/sysctl.d/990-security-misc.conf
+```
+(2) - Only processes with CAP_SYS_PTRACE (or root) may use ptrace
+```sh
+  sudo sed -i 's/kernel.yama.ptrace_scope=3/kernel.yama.ptrace_scope=2/g' /etc/sysctl.d/990-security-misc.conf
+```
 A workaround for WINE would be to give the wineserver and wine-preloader ptrace capabilities.
 Fix:
 ```sh
@@ -50,9 +61,9 @@ Fix:
   sudo setcap cap_sys_ptrace=eip /usr/bin/wineserver
   sudo setcap cap_sys_ptrace=eip /usr/bin/wine-preloader
 ```
-or globally allow ptrace for all processes (not recommended)
+(3) - Full disable ptrace (default in FedoraSecurityPlus)
 ```sh
-  sudo sed -i 's/kernel.yama.ptrace_scope=2/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/30_security-misc.conf
+  sudo sed -i 's/kernel.yama.ptrace_scope=3/kernel.yama.ptrace_scope=3/g' /etc/sysctl.d/990-security-misc.conf
 ```
 
 #
